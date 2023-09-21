@@ -48,6 +48,7 @@ class Brennan2018Dataset(Dataset):
 
         # load the upsampled (to 120 Hz) embeddings (of the entire recording)
         self.Y = torch.load(Y_path)
+        print('audio_embd_len: ',self.Y.shape[-1] )
 
         # load or rebuild the array of pre-processed EEG. Shape: (subj, chan, time)
         X_path = f"{self.root_dir}/data/Brennan2018/processed_X.pt"
@@ -80,15 +81,17 @@ class Brennan2018Dataset(Dataset):
         # Y: ( 1024, 86791 ) -> ( B, 1024, 1024 ) # w2v embeddings
 
         # length of sequence in samples
+                                    # 3            # ~119
         self.seq_len_samp = int(self.seq_len_sec * srate)
 
-        # length of baseline period in samples
+        # length of baseline period in samples              # 1.5                   #3
         self.baseline_len_samp = int(self.seq_len_samp * self.baseline_len_sec / self.seq_len_sec)
 
         # compute the number if samples that divide evenly by the number of samples in 1 segement
         trim_len = (self.X.shape[-1] // self.seq_len_samp) * self.seq_len_samp
 
         # compute the number of segements in the entire dataset
+        # 242
         num_segments = trim_len // self.seq_len_samp
 
         # trim the length of EEG and embeddings so that they can be evenly divided by num time samp in 1 segment
@@ -211,6 +214,7 @@ class Brennan2018Dataset(Dataset):
 
         return torch.from_numpy(res_embeddings).float()
 
+    # TODO: srate is too high
     def brain_preproc(self, audio_embd_len):
         # NOTE: look at comprehension-scores.txt
         excluded_subjects = [
@@ -265,10 +269,14 @@ class Brennan2018Dataset(Dataset):
             )
 
             # NOTE: This resamples EEG from 500Hz down to around 135Hz
-            # NOTE: Two conditions must be met here: (1) that w2v and brain_encoder get the same length of data, AND (2) that the outputs of w2v and brain_encoder have the SAME dimension (this is required by CLIPLoss). Since the brain_encoder outputs the same number of time samples, we just need to resample EEG to so that the resampled EEG has the same number of time samples as the NUMBER of embeddings coming out of the FE.
+            # NOTE: Two conditions must be met here: (1) that w2v and brain_encoder get the same length of data, 
+            # AND (2) that the outputs of w2v and brain_encoder have the SAME dimension (this is required by CLIPLoss). 
+            # Since the brain_encoder outputs the same number of time samples, we just need to resample EEG to so that 
+            # the resampled EEG has the same number of time samples as the NUMBER of embeddings coming out of the FE.
             downsampling_factor = eeg_filtered.shape[-1] / audio_embd_len
+            print(eeg_filtered.shape[-1], audio_embd_len)
             eeg_resampled = mne.filter.resample(eeg_filtered, down=downsampling_factor,)
-
+                        #500        #
             new_srate = fsample / downsampling_factor
             cprint(
                 f"Downsampling EEG from {fsample} Hz to {new_srate:.4f} Hz", color="cyan",

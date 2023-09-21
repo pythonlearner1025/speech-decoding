@@ -33,10 +33,10 @@ from speech_decoding.utils.preproc_utils import (
 
 mne.set_log_level(verbose="WARNING")
 
-manager = Manager()
-global_meg_onsets = manager.dict()
-global_speech_onsets = manager.dict()
-global_sentence_idxs = manager.dict()
+#manager = Manager()
+global_meg_onsets = dict()
+global_speech_onsets = dict()
+global_sentence_idxs = dict()
 
 
 class Gwilliams2022DatasetBase(Dataset):
