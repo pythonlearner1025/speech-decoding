@@ -23,7 +23,6 @@ from speech_decoding.utils.wav2vec_util import load_wav2vec_model, getW2VLastFou
 
 mne.set_log_level(verbose="WARNING")
 
-
 class Brennan2018Dataset(Dataset):
     def __init__(self, args, train=True):
         super().__init__()
@@ -92,7 +91,6 @@ class Brennan2018Dataset(Dataset):
         # compute the number of segements in the entire dataset
         # 242
         num_segments = trim_len // self.seq_len_samp
-        print(num_segments)
 
         # trim the length of EEG and embeddings so that they can be evenly divided by num time samp in 1 segment
         self.X = self.X[..., :trim_len]
@@ -103,8 +101,8 @@ class Brennan2018Dataset(Dataset):
 
         # make segments
         # NOTE: now X is a tuple of 242 matrices of size torch.Size([subj, ch, time]))
-        self.X = self.X.split(self.seq_len_samp, dim=-1)
-        self.Y = self.Y.split(self.seq_len_samp, dim=-1)
+        self.X = self.X.split(num_segments, dim=-1)
+        self.Y = self.Y.split(num_segments, dim=-1)
 
         # NOTE: baseline corection becomes naturally subject-specific
         self.X = self.baseline_correction()
@@ -198,7 +196,7 @@ class Brennan2018Dataset(Dataset):
         )
 
         res_embeddings = mne.filter.resample(
-            embeddings.numpy().astype(np.float64),
+            embeddings.cpu().numpy().astype(np.float64),
             up=2.4,  # FIXME: this upsamling factor must be computed, not hard-coded
             axis=-1,
         )

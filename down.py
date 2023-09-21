@@ -33,7 +33,9 @@ def download_raws_from_site(site_url, dest_folder):
 
     # Setup the selenium driver
     options = webdriver.ChromeOptions()
-    options.headless = True
+    options.add_argument('--headless')
+    options.add_argument("disable-dev-shm-usage") #/ Bypass OS security model
+    options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(options=options)
 
     try:
@@ -44,7 +46,7 @@ def download_raws_from_site(site_url, dest_folder):
 
         # Filter the elements based on the inner text
         to_download = [
-            e for e in elements if e.text.endswith('.mat') and e.text != 'dat.mat'
+            e for e in elements if e.text.endswith('.mat') and 'dat' not in e.text 
         ]
 
         # Construct the download links
@@ -74,7 +76,7 @@ if __name__ == '__main__':
     DEST_RAW = os.path.join(ABS, "data/Brennan2018/raw")  # Replace with your actual destination folder path
     DEST_AUDIO = os.path.join(ABS,"data/Brennan2018")
     URL = "https://deepblue.lib.umich.edu/data/concern/data_sets/bg257f92t#items_display"  # Replace with the website URL you want to scrape
-    #download_raws_from_site(URL, DEST
+    download_raws_from_site(URL, DEST_RAW)
     download_audios_from_site('https://deepblue.lib.umich.edu/data/downloads/t435gf09p',DEST_AUDIO)
 
 
