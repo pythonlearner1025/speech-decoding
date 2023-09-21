@@ -1,0 +1,154 @@
+Current working directory : /Users/minjunes/speech-decoding/outputs/2023-09-21/16-42-37
+{'dataset': 'Brennan2018', 'rebuild_dataset': False, 'use_wandb': False, 'wandb': {'project': 'speech_decoding', 'entity': 'sensho', 'run_name': 'word-onsets'}, 'use_sampler': True, 'reproducible': False, 'split_ratio': 0.8, 'split_mode': 'shallow', 'num_workers': 6, 'batch_size': 64, 'updates': 1200, 'lr': 0.0003, 'epochs': 300, 'reduction': 'mean', 'D1': 270, 'D2': 320, 'F': 512, 'K': 32, 'd_drop': 0.1, 'init_temperature': 5.1, 'wav2vec_model': 'facebook/wav2vec2-large-xlsr-53', 'preprocs': {'audio_resample_rate': 16000, 'lowpass_filter_width': 128, 'brain_resample_rate': 120, 'brain_filter_low': 1.0, 'brain_filter_high': 60, 'seq_len_sec': 3, 'baseline_len_sec': 0.5, 'shift_brain': True, 'shift_len': 150, 'last4layers': True, 'subject_wise': True, 'clamp': True, 'clamp_lim': 20}, 'memory_efficient': True, 'root_dir': '/Users/minjunes/speech-decoding'}
+Audio before resampling: torch.Size([1, 31908132])
+Audio after resampling: torch.Size([1, 11576647])
+Audio length: 723.5404375 s.
+Loading HuggingFace'S Wav2Vec2.0
+Some weights of the model checkpoint at facebook/wav2vec2-large-xlsr-53 were not used when initializing Wav2Vec2Model: ['project_hid.weight', 'quantizer.weight_proj.bias', 'project_q.weight', 'project_hid.bias', 'quantizer.codevectors', 'quantizer.weight_proj.weight', 'project_q.bias']
+- This IS expected if you are initializing Wav2Vec2Model from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing Wav2Vec2Model from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Generating audio embeddings
+Pre-computing W2V embeddings (last 4 layers): 100%|███████████████████████████████| 10/10 [07:15<00:00, 43.58s/it]
+Original  embedding shape torch.Size([1024, 36170]) | srate (out out w2v): 49.990 Hz
+Resampled embedding shape (1024, 86808) | srate: 120
+audio_embd_len:  86808
+Pre-processing EEG...
+['/Users/minjunes/speech-decoding/data/Brennan2018/raw/S01.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S03.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S04.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S05.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S06.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S08.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S10.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S11.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S12.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S13.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S14.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S15.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S16.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S17.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S18.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S19.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S20.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S21.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S22.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S25.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S26.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S34.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S35.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S36.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S37.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S38.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S39.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S40.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S41.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S42.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S44.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S45.mat',
+ '/Users/minjunes/speech-decoding/data/Brennan2018/raw/S48.mat']
+100%|█████████████████████████████████████████████████████████████████████████████| 33/33 [00:25<00:00,  1.28it/s]
+Filtering subject 0 :   0%|                                                                | 0/33 [00:00<?, ?it/s]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 1 :   3%|█▋                                                      | 1/33 [00:01<00:59,  1.85s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 2 :   6%|███▍                                                    | 2/33 [00:03<00:57,  1.84s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 3 :   9%|█████                                                   | 3/33 [00:05<00:54,  1.82s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 4 :  12%|██████▊                                                 | 4/33 [00:07<00:52,  1.81s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 5 :  15%|████████▍                                               | 5/33 [00:09<00:50,  1.80s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 6 :  18%|██████████▏                                             | 6/33 [00:10<00:48,  1.79s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 7 :  21%|███████████▉                                            | 7/33 [00:12<00:46,  1.77s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 8 :  24%|█████████████▌                                          | 8/33 [00:14<00:44,  1.76s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 9 :  27%|███████████████▎                                        | 9/33 [00:16<00:42,  1.75s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 10 :  30%|████████████████▎                                     | 10/33 [00:17<00:40,  1.75s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 11 :  33%|██████████████████                                    | 11/33 [00:19<00:38,  1.74s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 12 :  36%|███████████████████▋                                  | 12/33 [00:21<00:36,  1.74s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 13 :  39%|█████████████████████▎                                | 13/33 [00:22<00:34,  1.75s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 14 :  42%|██████████████████████▉                               | 14/33 [00:24<00:33,  1.75s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 15 :  45%|████████████████████████▌                             | 15/33 [00:26<00:31,  1.76s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 16 :  48%|██████████████████████████▏                           | 16/33 [00:28<00:30,  1.77s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 17 :  52%|███████████████████████████▊                          | 17/33 [00:30<00:28,  1.76s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 18 :  55%|█████████████████████████████▍                        | 18/33 [00:31<00:26,  1.75s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 19 :  58%|███████████████████████████████                       | 19/33 [00:33<00:24,  1.74s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 20 :  61%|████████████████████████████████▋                     | 20/33 [00:35<00:22,  1.75s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 21 :  64%|██████████████████████████████████▎                   | 21/33 [00:37<00:20,  1.75s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 22 :  67%|████████████████████████████████████                  | 22/33 [00:38<00:19,  1.78s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 23 :  70%|█████████████████████████████████████▋                | 23/33 [00:40<00:17,  1.77s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 24 :  73%|███████████████████████████████████████▎              | 24/33 [00:42<00:16,  1.78s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 25 :  76%|████████████████████████████████████████▉             | 25/33 [00:44<00:14,  1.78s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 26 :  79%|██████████████████████████████████████████▌           | 26/33 [00:46<00:13,  1.89s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 27 :  82%|████████████████████████████████████████████▏         | 27/33 [00:48<00:11,  1.85s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 28 :  85%|█████████████████████████████████████████████▊        | 28/33 [00:49<00:09,  1.84s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 29 :  88%|███████████████████████████████████████████████▍      | 29/33 [00:51<00:07,  1.84s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 30 :  91%|█████████████████████████████████████████████████     | 30/33 [00:53<00:05,  1.83s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 31 :  94%|██████████████████████████████████████████████████▋   | 31/33 [00:55<00:03,  1.82s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 32 :  97%|████████████████████████████████████████████████████▎ | 32/33 [00:57<00:01,  1.83s/it]363325 86808
+Downsampling EEG from 500 Hz to 119.4633 Hz
+Filtering subject 32 : 100%|██████████████████████████████████████████████████████| 33/33 [00:59<00:00,  1.79s/it]
+Samples in EEG DS 0: 86808 | total wav embeddings: 86808
+Samples in EEG DS 1: 86808 | total wav embeddings: 86808
+Samples in EEG DS 2: 86808 | total wav embeddings: 86808
+Samples in EEG DS 3: 86808 | total wav embeddings: 86808
+Samples in EEG DS 4: 86808 | total wav embeddings: 86808
+Samples in EEG DS 5: 86808 | total wav embeddings: 86808
+Samples in EEG DS 6: 86808 | total wav embeddings: 86808
+Samples in EEG DS 7: 86808 | total wav embeddings: 86808
+Samples in EEG DS 8: 86808 | total wav embeddings: 86808
+Samples in EEG DS 9: 86808 | total wav embeddings: 86808
+Samples in EEG DS 10: 86808 | total wav embeddings: 86808
+Samples in EEG DS 11: 86808 | total wav embeddings: 86808
+Samples in EEG DS 12: 86808 | total wav embeddings: 86808
+Samples in EEG DS 13: 86808 | total wav embeddings: 86808
+Samples in EEG DS 14: 86808 | total wav embeddings: 86808
+Samples in EEG DS 15: 86808 | total wav embeddings: 86808
+Samples in EEG DS 16: 86808 | total wav embeddings: 86808
+Samples in EEG DS 17: 86808 | total wav embeddings: 86808
+Samples in EEG DS 18: 86808 | total wav embeddings: 86808
+Samples in EEG DS 19: 86808 | total wav embeddings: 86808
+Samples in EEG DS 20: 86808 | total wav embeddings: 86808
+Samples in EEG DS 21: 86808 | total wav embeddings: 86808
+Samples in EEG DS 22: 86808 | total wav embeddings: 86808
+Samples in EEG DS 23: 86808 | total wav embeddings: 86808
+Samples in EEG DS 24: 86808 | total wav embeddings: 86808
+Samples in EEG DS 25: 86808 | total wav embeddings: 86808
+Samples in EEG DS 26: 86808 | total wav embeddings: 86808
+Samples in EEG DS 27: 86808 | total wav embeddings: 86808
+Samples in EEG DS 28: 86808 | total wav embeddings: 86808
+Samples in EEG DS 29: 86808 | total wav embeddings: 86808
+Samples in EEG DS 30: 86808 | total wav embeddings: 86808
+Samples in EEG DS 31: 86808 | total wav embeddings: 86808
+Samples in EEG DS 32: 86808 | total wav embeddings: 86808
+Loading preprocessed EEG...
+Using existing pre-processed data torch.Size([33, 60, 86808]), srate=119.46329044244135
+Number of subjects: 33
+X (EEG): torch.Size([33, 60, 86791]), Y (audio embeds): torch.Size([1024, 86791])
+Number of samples: 286 (train), 72 (test)

@@ -81,7 +81,6 @@ class Brennan2018Dataset(Dataset):
         # Y: ( 1024, 86791 ) -> ( B, 1024, 1024 ) # w2v embeddings
 
         # length of sequence in samples
-                                    # 3            # ~119
         self.seq_len_samp = int(self.seq_len_sec * srate)
 
         # length of baseline period in samples              # 1.5                   #3
@@ -93,6 +92,7 @@ class Brennan2018Dataset(Dataset):
         # compute the number of segements in the entire dataset
         # 242
         num_segments = trim_len // self.seq_len_samp
+        print(num_segments)
 
         # trim the length of EEG and embeddings so that they can be evenly divided by num time samp in 1 segment
         self.X = self.X[..., :trim_len]
@@ -102,9 +102,9 @@ class Brennan2018Dataset(Dataset):
         self.X = self.scaleAndClamp()
 
         # make segments
-        # NOTE: now X is a tuple of 358 matrices of size torch.Size([subj, ch, time]))
-        self.X = self.X.split(num_segments, dim=-1)
-        self.Y = self.Y.split(num_segments, dim=-1)
+        # NOTE: now X is a tuple of 242 matrices of size torch.Size([subj, ch, time]))
+        self.X = self.X.split(self.seq_len_samp, dim=-1)
+        self.Y = self.Y.split(self.seq_len_samp, dim=-1)
 
         # NOTE: baseline corection becomes naturally subject-specific
         self.X = self.baseline_correction()
@@ -273,6 +273,8 @@ class Brennan2018Dataset(Dataset):
             # AND (2) that the outputs of w2v and brain_encoder have the SAME dimension (this is required by CLIPLoss). 
             # Since the brain_encoder outputs the same number of time samples, we just need to resample EEG to so that 
             # the resampled EEG has the same number of time samples as the NUMBER of embeddings coming out of the FE.
+
+            # 4.19                  # ?                     ?
             downsampling_factor = eeg_filtered.shape[-1] / audio_embd_len
             print(eeg_filtered.shape[-1], audio_embd_len)
             eeg_resampled = mne.filter.resample(eeg_filtered, down=downsampling_factor,)
