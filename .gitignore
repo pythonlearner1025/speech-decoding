@@ -35,6 +35,7 @@ runs/
 wandb/
 
 # Micellaneous
+*.zip*
 *.pt
 train.sh
 *_debug*
